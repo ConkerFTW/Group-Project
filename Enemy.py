@@ -3,8 +3,8 @@ from Sprite import Sprite
 from Vector import Vector
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 class Enemy(Sprite):
-    def __init__(self,image,columns,rows,enemyType):
-        super().__init__(image,columns,rows)
+    def __init__(self,image,image_alternate,columns,rows,enemyType):
+        super().__init__(image,image_alternate,columns,rows)
         self.moving = False
         self.shooting = False
         self.dead = False
@@ -14,8 +14,8 @@ class Enemy(Sprite):
         if enemyType == "walker":
             self.health = 5
             self.vel = Vector(2,0)
-            self.pos = Vector(300,500)
-            self.sizeDest = (self.sizeDest[0] /3,self.sizeDest[1]/3)
+            self.pos = Vector(300,530)
+            self.sizeDest = (self.sizeDest[0] /5,self.sizeDest[1]/5)
 
         else:
             self.health = 1
@@ -30,6 +30,7 @@ class Enemy(Sprite):
             if self.moving:
                 if self.currentFrame[0] > 3:
                     self.currentFrame[0] = 0
+
             if self.shooting:
                 pass
             if self.dead:

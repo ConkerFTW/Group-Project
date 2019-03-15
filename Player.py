@@ -4,8 +4,8 @@ from Sprite import Sprite
 from Vector import Vector
 
 class Player(Sprite):
-    def __init__(self, image, columns, rows):
-        super().__init__(image, columns, rows)
+    def __init__(self, image,image_alternate, columns, rows):
+        super().__init__(image,image_alternate, columns, rows)
         self.lives = 3
         self.left = True  # Default spritesheet goes left
         self.nonInterupt = False

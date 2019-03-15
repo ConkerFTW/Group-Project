@@ -26,3 +26,13 @@ class Interaction():
             self.player.velocity += (Vector(0, -0.2))
         if self.keyboard.down:
             self.player.velocity += (Vector(0, 0.2))
+
+        if self.enemy.frameCounter % 100 == 0:
+            if self.enemy.enemyType == "walker":
+                if self.enemy.pos.getP()[0] < self.player.pos.getP()[0]:
+                    self.enemy.vel = Vector(1,self.enemy.vel.getP()[1])
+                    self.enemy.right = True
+                elif self.enemy.pos.getP()[0] > self.player.pos.getP()[0]:
+                    self.enemy.vel = Vector(-1,self.enemy.vel.getP()[1])
+                    self.enemy.right = False
+
