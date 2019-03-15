@@ -25,24 +25,27 @@ class Interaction():
 
     def update(self):
         if self.keyboard.right:
-            self.player.velocity += (Vector(0.2, 0))
+            self.player.right = True
             self.player.startMoving()
-        if self.keyboard.left:
-            self.player.velocity += (Vector(-0.2, 0))
+        elif self.keyboard.left:
+            self.player.right = False
             self.player.startMoving()
-        if self.keyboard.up:
-            self.player.velocity += (Vector(0, -0.2))
-        if self.keyboard.down:
-            self.player.velocity += (Vector(0, 0.2))
+        else:
+            self.player.stopMoving()
+
+        # if self.keyboard.up:
+        #     self.player.velocity += (Vector(0, -0.2))
+        # if self.keyboard.down:
+        #     self.player.velocity += (Vector(0, 0.2))
 
         for enemy in self.enemies:
 
             if enemy.frameCounter % 100 == 0:
                 if enemy.enemyType == "walker":
                     if enemy.pos.getP()[0] < self.player.pos.getP()[0]:
-                        enemy.vel = Vector(enemy.randomSpeed(0,1),enemy.vel.getP()[1])
+                        enemy.vel = Vector(enemy.randomSpeed(0,2),enemy.vel.getP()[1])
                         enemy.right = True
                     elif enemy.pos.getP()[0] > self.player.pos.getP()[0]:
-                        enemy.vel = Vector(-enemy.randomSpeed(0,1),enemy.vel.getP()[1])
+                        enemy.vel = Vector(-enemy.randomSpeed(0,2),enemy.vel.getP()[1])
                         enemy.right = False
 

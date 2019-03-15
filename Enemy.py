@@ -30,10 +30,10 @@ class Enemy(Sprite):
 
         elif enemyType == "shooter":
             if num == 1:
-                self.pos = Vector(50,random.randrange(100,300))
+                self.pos = Vector(random.randrange(50,300),random.randrange(100,300))
                 self.right = True
             elif num == 0:
-                self.pos = Vector(950,random.randrange(100,300))
+                self.pos = Vector(random.randrange(700,950),random.randrange(100,300))
                 self.right = False
             self.health = 1
             self.vel = Vector(0,0)

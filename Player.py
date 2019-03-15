@@ -22,8 +22,7 @@ class Player(Sprite):
         #self.updateVel()
         self.pos += self.velocity
         self.velocity.multiply(0.94)
-        if self.isStationary(self.velocity):
-            self.moving = False
+        self.updateVel()
 
     # Updating the frame depending on the animation
     def updateFrame(self):
@@ -92,10 +91,10 @@ class Player(Sprite):
     def updateVel(self):
         if self.moving:
             # Change horizontal velocity
-            if self.left:
-                self.velocity = Vector(0, 5)
+            if self.right:
+                self.velocity = Vector(5, 0)
             else:
-                self.velocity = Vector(0, -5)
+                self.velocity = Vector(-5, 0)
         if self.jumping:
             self.velocity += Vector(2, 0)
             # Change vertical velocity

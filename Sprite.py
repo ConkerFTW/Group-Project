@@ -29,7 +29,7 @@ class Sprite():
             canvas.draw_image(self.alternateimage, centerSource, self.frameSize, centreDest, self.sizeDest)
 
     def distanceTo(self,other):
-        return (self.pos - other.pos).length()
+        return Vector(self.pos.getP()[0] - other.getP()[0] , self.pos.getP()[1] - other.getP()[1]).length()
 
     def contains(self,other):
         return self.distanceTo(other.pos) <= self.sizeDest[0]
