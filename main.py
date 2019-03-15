@@ -6,12 +6,17 @@ from Player import Player
 from Vector import Vector
 from Interaction import Interaction
 from Enemy import Enemy
+import os
+
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+fcat = os.path.join(__location__, 'cat_ar_base.png');
+fman = os.path.join(__location__, 'kramer_sprites.png');
 
 WIDTH = 1000
 HEIGHT = 600
-player = Player("/home/conor/PycharmProjects/GroupProject/cat_ar_base.png",16,16)
+player = Player(fcat,16,16)
 keyboard = KeyBoard()
-enemy1 = Enemy("/home/conor/PycharmProjects/GroupProject/kramer_sprites.png",1,7,"walker")
+enemy1 = Enemy(fman,4,1,"walker")
 
 interaction = Interaction(player,keyboard,enemy1)
 frame = simplegui.create_frame("Catmando", WIDTH, HEIGHT)

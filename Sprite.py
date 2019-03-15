@@ -33,5 +33,5 @@ class Sprite():
         if self.distanceTo(other.pos) <= self.sizeDest[0] + other.sizeDest[0]:
             return True
 
-    def isStationary(self):
-        return self.vel.length() == 0
+    def isStationary(self,vel):
+        return vel.length() < 5

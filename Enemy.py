@@ -13,10 +13,9 @@ class Enemy(Sprite):
         self.enemyType = enemyType
         if enemyType == "walker":
             self.health = 5
-            self.vel = Vector(5,0)
-            self.pos = Vector(0,500)
-            self.sizeDest = (600,200)
-
+            self.vel = Vector(2,0)
+            self.pos = Vector(300,500)
+            self.sizeDest = (self.sizeDest[0] /3,self.sizeDest[1]/3)
 
         else:
             self.health = 1
@@ -24,13 +23,13 @@ class Enemy(Sprite):
 
 
     def update(self):
-        self.currentFrame[1] += 1
-        self.frameCounter += 1
+        if self.frameCounter % 20 == 0:
+            self.currentFrame[0] += 1
         if self.enemyType == "walker": # TODO Update with more Enemies
             self.moving = True
             if self.moving:
-                if self.currentFrame[1] > 3:
-                    self.currentFrame[1] = 0
+                if self.currentFrame[0] > 3:
+                    self.currentFrame[0] = 0
             if self.shooting:
                 pass
             if self.dead:
@@ -38,6 +37,8 @@ class Enemy(Sprite):
             if self.idle:
                 pass
         self.pos.add(self.vel)
+        self.frameCounter += 1
+
 
     def updateState(self):
         if self.health == 0:
