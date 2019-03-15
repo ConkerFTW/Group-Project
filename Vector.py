@@ -37,7 +37,7 @@ class Vector:
         return self
 
     def __add__(self, other):
-        return self.copy().add(other);
+        return self.copy().add(other)
 
     # Negates the vector (makes it point in the opposite direction)
     def negate(self):

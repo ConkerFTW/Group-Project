@@ -39,4 +39,4 @@ class Sprite():
             return True
 
     def isStationary(self,vel):
-        return vel.length() < 5
+        return vel.length() < 1

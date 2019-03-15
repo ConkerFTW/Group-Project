@@ -2,17 +2,25 @@ import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Vector import Vector
 
 class Interaction():
-    def __init__(self,player,keyboard,enemy):
+    def __init__(self,player,keyboard,enemies):
         self.player = player
         self.keyboard = keyboard
-        self.enemy = enemy
+        self.enemies = enemies
 
     def draw(self, canvas):
         self.update()
         self.player.update()
         self.player.draw(canvas)
-        self.enemy.update()
-        self.enemy.draw(canvas)
+        for enemy in self.enemies:
+            enemy.update()
+            enemy.draw(canvas)
+
+            if enemy.shooting and enemy.framestartshoot == 3:
+                enemy.bullets.append(enemy.shoot(self.player.pos))
+            if len(enemy.bullets) > 0:
+                for bullet in enemy.bullets:
+                    bullet.update()
+                    bullet.draw(canvas)
 
 
     def update(self):
@@ -27,12 +35,14 @@ class Interaction():
         if self.keyboard.down:
             self.player.velocity += (Vector(0, 0.2))
 
-        if self.enemy.frameCounter % 100 == 0:
-            if self.enemy.enemyType == "walker":
-                if self.enemy.pos.getP()[0] < self.player.pos.getP()[0]:
-                    self.enemy.vel = Vector(1,self.enemy.vel.getP()[1])
-                    self.enemy.right = True
-                elif self.enemy.pos.getP()[0] > self.player.pos.getP()[0]:
-                    self.enemy.vel = Vector(-1,self.enemy.vel.getP()[1])
-                    self.enemy.right = False
+        for enemy in self.enemies:
+
+            if enemy.frameCounter % 100 == 0:
+                if enemy.enemyType == "walker":
+                    if enemy.pos.getP()[0] < self.player.pos.getP()[0]:
+                        enemy.vel = Vector(enemy.randomSpeed(0,1),enemy.vel.getP()[1])
+                        enemy.right = True
+                    elif enemy.pos.getP()[0] > self.player.pos.getP()[0]:
+                        enemy.vel = Vector(-enemy.randomSpeed(0,1),enemy.vel.getP()[1])
+                        enemy.right = False
 
