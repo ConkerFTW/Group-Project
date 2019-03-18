@@ -17,6 +17,8 @@ class Sprite():
         self.sizeDest = (self.frameSize[0]*4, self.frameSize[0]*4)
         self.currentFrame = [0,0]
         self.right = True
+        self.frameCounter = 0 # How many frames the Enemy has been alive
+
 
 
     def draw(self, canvas):
@@ -35,7 +37,7 @@ class Sprite():
         return self.distanceTo(other.pos) <= self.sizeDest[0]
 
     def checkCollisionWith(self, other):
-        if self.distanceTo(other.pos) <= self.sizeDest[0] + other.sizeDest[0]:
+        if self.distanceTo(other.pos) <= self.sizeDest[0]/4:
             return True
 
     def isStationary(self,vel):

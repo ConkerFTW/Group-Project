@@ -1,5 +1,6 @@
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Vector import Vector
+import random
 
 class Interaction():
     def __init__(self,player,keyboard,enemies):
@@ -14,9 +15,6 @@ class Interaction():
         for enemy in self.enemies:
             enemy.update()
             enemy.draw(canvas)
-
-            if enemy.shooting and enemy.framestartshoot == 3:
-                enemy.bullets.append(enemy.shoot(self.player.pos))
             if len(enemy.bullets) > 0:
                 for bullet in enemy.bullets:
                     bullet.update()
@@ -40,6 +38,9 @@ class Interaction():
 
         for enemy in self.enemies:
 
+            if enemy.shooting and enemy.framestartshoot == 3:
+                enemy.bullets.append(enemy.shoot(self.player.pos))
+
             if enemy.frameCounter % 100 == 0:
                 if enemy.enemyType == "walker":
                     if enemy.pos.getP()[0] < self.player.pos.getP()[0]:
@@ -48,4 +49,8 @@ class Interaction():
                     elif enemy.pos.getP()[0] > self.player.pos.getP()[0]:
                         enemy.vel = Vector(-enemy.randomSpeed(0,2),enemy.vel.getP()[1])
                         enemy.right = False
+            if len(enemy.bullets) > 0:
+                for bullet in enemy.bullets:
+                    if bullet.pos.getP()[0] > 1200 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or bullet.pos.getP()[1] < -50:
+                        enemy.bullets.remove(bullet)
 

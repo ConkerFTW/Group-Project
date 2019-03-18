@@ -1,6 +1,7 @@
 from Sprite import Sprite
 import random
 from Bullet import Bullet
+import os
 
 from Vector import Vector
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
@@ -11,10 +12,10 @@ class Enemy(Sprite):
         self.shooting = False
         self.dead = False
         self.idle = False
-        self.frameCounter = 0 # How many frames the Enemy has been alive
         self.enemyType = enemyType
         self.framestartshoot = 0
         self.bullets = []
+
 
         num = random.randrange(0, 2)
 
@@ -40,6 +41,13 @@ class Enemy(Sprite):
             self.sizeDest = (self.sizeDest[0] / 2, self.sizeDest[1] / 2)
             self.idle = True
 
+        elif self.enemyType == "missileLauncher":
+            self.pos = Vector(-2000,-2000)
+            self.right = True
+            self.health = 100
+            self.vel = Vector(0,0)
+
+
     def randomSpeed(self, min, max):
         return random.randrange(min, max + 1)
 
@@ -53,9 +61,6 @@ class Enemy(Sprite):
                     self.currentFrame[0] = 0
             elif self.idle:
                 self.currentFrame[0] = 1
-
-            if self.shooting:
-                pass
             if self.dead:
                 pass
             if self.idle:
@@ -80,6 +85,12 @@ class Enemy(Sprite):
                 if self.currentFrame[0] > 6:
                     self.currentFrame[0] = 0
 
+        if self.enemyType == "missileLauncher":
+            number1 = random.randrange(0, 100)
+            number2 = random.randrange(0, 100)
+
+            if number1 == number2:
+                self.bullets.append(self.horizontalShoot())
 
         self.pos.add(self.vel)
         self.frameCounter += 1
@@ -105,10 +116,10 @@ class Enemy(Sprite):
                 self.idle = False
                 self.framestartshoot = 0
 
-        if self.shooting:
-            if self.framestartshoot >= 6:
-                self.shooting = False
-                self.idle = True
+            if self.shooting:
+                if self.framestartshoot >= 6:
+                    self.shooting = False
+                    self.idle = True
 
 
 
@@ -119,8 +130,31 @@ class Enemy(Sprite):
         x = -(self.pos.getP()[0] - playerpos.getP()[0]) / 100
         y = -(self.pos.getP()[1] - playerpos.getP()[1]) / 100
         vel = Vector(x,y)
-        return Bullet(self.pos,vel,True) #Starting Pos, Starting Velocity(Direction Towards Player), if Hostile
 
+        if  x > 0:
+            right = True
+        else:
+            right = False
 
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        imagenormal = os.path.join(__location__, 'images/sprites/fireballRight.png')
+        imagealternate = os.path.join(__location__, 'images/sprites/fireballLeft.png')
 
+        return Bullet(self.pos,vel,True,"magic",right,imagenormal,imagealternate, 8,8) #Starting Pos, Starting Velocity(Direction Towards Player), if Hostile
 
+    def horizontalShoot(self):
+        yStart = random.randrange(20,500)
+        xStart = random.choice([0,1000])
+        startPos = Vector(xStart,yStart)
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        imagenormal = os.path.join(__location__, 'images/sprites/flyingRight.png')
+        imagealternate = os.path.join(__location__, 'images/sprites/flyingLeft.png')
+
+        if xStart == 0:
+            vel = Vector(3,0)
+            right = True
+        else:
+            vel = Vector(-3,0)
+            right = False
+
+        return Bullet(startPos,vel,True,"missile",right,imagenormal,imagealternate,5,1)
