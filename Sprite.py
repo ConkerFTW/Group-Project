@@ -37,8 +37,7 @@ class Sprite():
         return self.distanceTo(other.pos) <= self.sizeDest[0]
 
     def checkCollisionWith(self, other):
-        if self.distanceTo(other.pos) <= self.sizeDest[0]/4:
-            return True
+        return self.distanceTo(other.pos) <= self.sizeDest[0] / 2
 
     def isStationary(self,vel):
         return vel.length() < 1

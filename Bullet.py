@@ -34,5 +34,14 @@ class Bullet(Sprite):
         self.frameCounter += 1
 
 
+    def checkCollisionWith(self, other):
+        if self.type == "missile":
+            if self.distanceTo(other.pos) <= self.sizeDest[0]/2:
+                return True
+        else:
+            if self.distanceTo(other.pos) <= self.sizeDest[0]:
+                return True
+
+
 
 

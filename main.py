@@ -43,7 +43,7 @@ WIDTH = 1000
 HEIGHT = 600
 player = Player(fcat,fcat,16,16)
 keyboard = KeyBoard()
-enemies = spawnEnemies(3,3)
+enemies = spawnEnemies(3,0)
 
 interaction = Interaction(player,keyboard,enemies)
 frame = simplegui.create_frame("Catmando", WIDTH, HEIGHT)

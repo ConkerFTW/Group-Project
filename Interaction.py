@@ -7,6 +7,8 @@ class Interaction():
         self.player = player
         self.keyboard = keyboard
         self.enemies = enemies
+        self.takingDamage = False
+        self.counter = 0
 
     def draw(self, canvas):
         self.update()
@@ -51,6 +53,24 @@ class Interaction():
                         enemy.right = False
             if len(enemy.bullets) > 0:
                 for bullet in enemy.bullets:
+                    if bullet.checkCollisionWith(self.player):
+                        enemy.bullets.remove(bullet)
+                        self.player.removeLife()
                     if bullet.pos.getP()[0] > 1200 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or bullet.pos.getP()[1] < -50:
                         enemy.bullets.remove(bullet)
 
+            if enemy.checkCollisionWith(self.player):
+                if not self.takingDamage:
+                    self.player.removeLife()
+                    self.takingDamage = True
+                    self.counter = 0
+                else:
+                    if self.counter % 120 == 0:
+                        self.takingDamage = False
+
+        if self.player.lives <= 0:
+            self.player.startDeath()
+            print("Game Over")
+        print(self.player.lives)
+
+        self.counter += 1
