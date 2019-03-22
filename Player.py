@@ -131,7 +131,7 @@ class Player(Sprite):
         if self.lives == 0:
             self.startDeath()
 
-    # Called by self when lives = 0
+    # Called by self when lives.png = 0
     def startDeath(self):
         self.currentFrame[1] = 0
         self.dead = True

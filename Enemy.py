@@ -111,7 +111,10 @@ class Enemy(Sprite):
 
 
         if self.enemyType == "shooter":
-            if self.frameCounter % 120 == 0:
+            num1 = random.randrange(0,100)
+            num2 = random.randrange(0,100)
+
+            if num1 == num2:
                 self.shooting = True
                 self.idle = False
                 self.framestartshoot = 0
