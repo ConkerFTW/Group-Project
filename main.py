@@ -11,7 +11,8 @@ import os
 class Game():
     def __init__(self):
         self.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        self.fcat = os.path.join(self.__location__, 'images/sprites/cat_ar_base.png')
+        self.fcat = os.path.join(self.__location__, 'images/sprites/catmandoRight.png')
+        self.fcatleft = os.path.join(self.__location__, 'images/sprites/catmandoLeft.png')
         self.fman = os.path.join(self.__location__, 'images/sprites/kramer_sprites.png')
         self.fmanleft = os.path.join(self.__location__, 'images/sprites/kramer_sprites_left.png')
         self.fwiz = os.path.join(self.__location__, 'images/sprites/wizzardRight.png')
@@ -21,10 +22,10 @@ class Game():
         self.level = 1
         self.WIDTH = 1000
         self.HEIGHT = 600
-        self.player = Player(self.fcat, self.fcat, 16, 16)
+        self.player = Player(self.fcat, self.fcatleft, 16, 16)
         self.keyboard = KeyBoard()
-        self.enemies = self.spawnEnemies(0,0)
-        self.gui = Gui(self.lives,self.lives,1,1,self.player)
+        self.enemies = self.spawnEnemies(0, 0)
+        self.gui = Gui(self.lives, self.lives, 1, 1, self.player)
 
 
         self.interaction = Interaction(self.player, self.keyboard, self.enemies,self.gui)
@@ -66,6 +67,8 @@ class Game():
                 self.enemies.clear()
                 print("Boss Time")
             self.interaction.enemies = self.enemies
+        if self.player.lives == 0:
+            self.frame.stop()
 
 
     def startLevel(self):

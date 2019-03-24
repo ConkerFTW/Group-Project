@@ -23,6 +23,9 @@ class Interaction():
                 for bullet in enemy.bullets:
                     bullet.update()
                     bullet.draw(canvas)
+        for bullet in self.player.bullets:
+            bullet.update()
+            bullet.draw(canvas)
 
 
     def update(self):
@@ -35,10 +38,15 @@ class Interaction():
         else:
             self.player.stopMoving()
 
-        # if self.keyboard.up:
-        #     self.player.velocity += (Vector(0, -0.2))
-        # if self.keyboard.down:
-        #     self.player.velocity += (Vector(0, 0.2))
+        if self.keyboard.up:
+            self.player.startJump()
+        else:
+            self.player.stopJump()
+
+        if self.keyboard.space:
+            self.player.startShooting()
+        else:
+            self.player.stopShooting()
 
         for enemy in self.enemies:
 
@@ -83,5 +91,10 @@ class Interaction():
         if len(self.enemies) == 0:
             #simplegui.Frame.stop()
             pass
+
+        for bullet in self.player.bullets:
+            if bullet.pos.getP()[0] > 1200 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or \
+                    bullet.pos.getP()[1] < -50:
+                self.player.bullets.remove(bullet)
 
 
