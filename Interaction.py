@@ -10,6 +10,7 @@ class Interaction():
         self.takingDamage = False
         self.counter = 0
         self.gui = gui
+        self.timeShooting = self.counter
 
     def draw(self, canvas):
         self.update()
@@ -43,8 +44,9 @@ class Interaction():
         else:
             self.player.stopJump()
 
-        if self.keyboard.space:
+        if self.keyboard.space and self.timeShooting >= 15:
             self.player.startShooting()
+            self.timeShooting = 0
         else:
             self.player.stopShooting()
 
@@ -81,16 +83,19 @@ class Interaction():
             if self.counter % 120 == 0:
                 self.takingDamage = False
 
-        if self.player.lives <= 0:
-            self.player.startDeath()
+            for bullet in self.player.bullets:
+                if bullet.checkCollisionWith(enemy):
+                    self.enemies.remove(enemy)
+                    self.player.bullets.remove(bullet)
+
+
+
+        if self.player.dead:
             print("Game Over")
-        print(self.player.lives)
 
         self.counter += 1
+        self.timeShooting += 1
 
-        if len(self.enemies) == 0:
-            #simplegui.Frame.stop()
-            pass
 
         for bullet in self.player.bullets:
             if bullet.pos.getP()[0] > 1200 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or \

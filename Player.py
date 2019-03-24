@@ -9,7 +9,7 @@ import os
 class Player(Sprite):
     def __init__(self, image,image_alternate, columns, rows):
         super().__init__(image,image_alternate, columns, rows)
-        self.lives = 3
+        self.lives = 2
         self.nonInterrupt = False
         self.moving = False
         self.dead = False
@@ -22,6 +22,7 @@ class Player(Sprite):
         self.pos = Vector(500,500)
         self.gravity = Vector(0, 0)
         self.frameCounter = 0
+        self.deadCounter = 0
 
     def update(self):
         if self.frameCounter % 10 == 0:
@@ -56,12 +57,11 @@ class Player(Sprite):
         self.currentFrame[0] += 1
 
         # Death animation
-        if self.dead:
+        if self.lives <= 0:
+            self.deadCounter += 1
             self.currentFrame[1] = 8
-            if self.currentFrame[0] >= 7:
-                self.currentFrame[0] = 0
-                # Run Game Over
-
+            if self.currentFrame[0] > 5:
+                self.dead = True
         # Rolling
         #elif self.rolling:
         #    self.currentFrame[1] = 7
@@ -135,50 +135,55 @@ class Player(Sprite):
         xStart, yStart = self.pos.getP()
         startPos = Vector(xStart, yStart + 30)
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        imagenormal = os.path.join(__location__, 'images/sprites/fireballRight.png')
-        imagealternate = os.path.join(__location__, 'images/sprites/fireballLeft.png')
+        imagenormal = os.path.join(__location__, 'images/sprites/boomerangbullet.png')
+        imagealternate = os.path.join(__location__, 'images/sprites/boomerangbulletleft.png')
 
         if self.right:
-            vel = Vector(3, 0)
+            vel = Vector(6, 0)
             right = True
         else:
-            vel = Vector(-3, 0)
+            vel = Vector(-6, 0)
             right = False
 
-        return Bullet(startPos, vel, False, "missile", right, imagenormal, imagealternate, 8, 8)
+        return Bullet(startPos, vel, False, "bullet", right, imagenormal, imagealternate, 8, 1)
 
     # Following methods to be called in interaction class after user inputs
     def startMoving(self):
-        self.moving = True
+        if self.lives > 0:
+            self.moving = True
 
     def startShooting(self):
-        self.shooting = True
-        self.bullets.append(self.shoot())
+        if self.lives > 0:
+            self.shooting = True
+            self.bullets.append(self.shoot())
 
     def startRoll(self):
-        self.rolling = True
+        if self.lives > 0:
+            self.rolling = True
 
     def startJump(self):
-        self.jumping = True
-        self.velocity = Vector(self.velocity.getP()[0], -10)
+        if self.lives > 0:
+            self.jumping = True
+            self.velocity = Vector(self.velocity.getP()[0], -10)
 
     def stopJump(self):
-        self.jumping = False
+        if self.lives > 0:
+            self.jumping = False
 
     # Called from interaction class when user input ends
     def stopMoving(self):
-        self.moving = False
+        if self.lives > 0:
+            self.moving = False
 
     def stopShooting(self):
-        self.shooting = False
+        if self.lives > 0:
+            self.shooting = False
 
     # Called from interaction class following collision
     def removeLife(self):
-        if not self.invincible:
+        if not self.invincible and self.lives > 0:
             self.lives -= 1
             if self.lives == 0:
-                self.startDeath()
+                self.currentFrame[0] = 0
 
-    # Called by self when lives.png = 0
-    def startDeath(self):
-        self.dead = True
+

@@ -56,18 +56,20 @@ class Game():
     def draw(self,cavnas):
         self.interaction.draw(cavnas)
         if len(self.interaction.enemies) == 1:
+            self.player.lives += 1
             self.level += 1
+            self.player.bullets.clear()
             if self.level == 2:
-                self.enemies = self.spawnEnemies(6, 0)
+                self.enemies = self.spawnEnemies(5, 0)
             elif self.level == 3:
-                self.enemies = self.spawnEnemies(4, 2)
+                self.enemies = self.spawnEnemies(4, 3)
             elif self.level == 4:
-                self.enemies = self.spawnEnemies(6, 4)
+                self.enemies = self.spawnEnemies(6, 6)
             elif self.level == 5:
                 self.enemies.clear()
                 print("Boss Time")
             self.interaction.enemies = self.enemies
-        if self.player.lives == 0:
+        if self.player.dead:
             self.frame.stop()
 
 

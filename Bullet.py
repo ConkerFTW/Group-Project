@@ -13,6 +13,9 @@ class Bullet(Sprite):
             self.sizeDest = [50,50]
         if self.type == "missile":
             self.sizeDest = [self.sizeDest[0]/30,self.sizeDest[1]/30]
+        if self.type == "bullet":
+            self.sizeDest = [self.sizeDest[0]/4,self.sizeDest[1]/4]
+
 
     def update(self):
         self.pos = Vector(self.pos.getP()[0]+self.dx.getP()[0], self.pos.getP()[1]+self.dx.getP()[1])
@@ -28,6 +31,12 @@ class Bullet(Sprite):
             if self.currentFrame[0] > 4:
                 self.currentFrame[0] = 0
             else:
+                self.currentFrame[0] += 1
+
+        if self.type == "bullet":
+            if self.currentFrame[0] > 7:
+                self.currentFrame[0] = 0
+            elif self.frameCounter % 2 == 0:
                 self.currentFrame[0] += 1
 
 
