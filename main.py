@@ -26,10 +26,10 @@ class Game():
         self.loading = simplegui._load_local_image(self.load)
         self.back = os.path.join(self.__location__, 'images/1280x720GameBackground.png')
         self.background = simplegui._load_local_image(self.back)
-        self.level = 1
+        self.level = 0
         self.player = Player(self.fcat, self.fcatleft, 16, 16)
         self.keyboard = KeyBoard()
-        self.enemies = self.spawnEnemies(0, 0)
+        self.enemies = []
         self.gui = Gui(self.lives, self.lives, 1, 1, self.player)
         self.counter = 0
 
@@ -61,20 +61,20 @@ class Game():
 
     def draw(self, canvas):
         self.interaction.draw(canvas)
-        if len(self.interaction.enemies) == 1:
+        if len(self.interaction.enemies) <= 1:
             self.counter += 1
             canvas.draw_image(self.loading,(256,256),(512,512),(WIDTH/2,HEIGHT/2),(512,512))
             if self.counter % 120 == 0:
                 self.player.lives += 1
                 self.level += 1
                 self.player.bullets.clear()
-                if self.level == 2:
+                if self.level == 1:
                     self.enemies = self.spawnEnemies(5, 0)
-                elif self.level == 3:
+                elif self.level == 2:
                     self.enemies = self.spawnEnemies(4, 3)
-                elif self.level == 4:
+                elif self.level == 3:
                     self.enemies = self.spawnEnemies(6, 6)
-                elif self.level == 5:
+                elif self.level == 4:
                     self.enemies.clear()
                     print("Boss Time")
                 self.interaction.enemies = self.enemies

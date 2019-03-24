@@ -87,8 +87,8 @@ class Enemy(Sprite):
                     self.currentFrame[0] = 0
 
         if self.enemyType == "missileLauncher":
-            number1 = random.randrange(0, 400)
-            number2 = random.randrange(0 ,400)
+            number1 = random.randrange(0, 200)
+            number2 = random.randrange(0 ,200)
 
             if number1 == number2:
                 self.bullets.append(self.horizontalShoot())
