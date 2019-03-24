@@ -6,8 +6,8 @@ from Bullet import Bullet
 import os
 import pygame
 
-
-
+SCREENWIDTH = 1280
+SCREENHEIGHT = 720
 class Player(Sprite):
     def __init__(self, image,image_alternate, columns, rows):
         super().__init__(image,image_alternate, columns, rows)
@@ -22,7 +22,7 @@ class Player(Sprite):
         self.invincible = False
         self.bullets = []
         self.velocity = Vector(0, 0)
-        self.pos = Vector(500,500)
+        self.pos = Vector(SCREENWIDTH/2,700)
         self.gravity = Vector(0, 0)
         self.frameCounter = 0
         self.deadCounter = 0
@@ -44,13 +44,13 @@ class Player(Sprite):
         self.updateVel()
         self.updateAcceleration()
         self.pos += self.velocity
-        if self.pos.getP()[1] > 500:
-            self.pos = Vector(self.pos.getP()[0], 500)
+        if self.pos.getP()[1] > 620:
+            self.pos = Vector(self.pos.getP()[0], 620)
         elif self.pos.getP()[1] < 0:
             self.pos = Vector(self.pos.getP()[0], 1)
             self.jumping = False
-        if self.pos.getP()[0] > 975:
-            self.pos = Vector(975, self.pos.getP()[1])
+        if self.pos.getP()[0] > 1255:
+            self.pos = Vector(1255, self.pos.getP()[1])
         elif self.pos.getP()[0] < 25:
             self.pos = Vector(25, self.pos.getP()[1])
         self.frameCounter += 1
@@ -141,7 +141,7 @@ class Player(Sprite):
 
     # Updating the acceleration
     def updateAcceleration(self):
-        if self.pos.getP()[1] < 500 and not self.jumping:
+        if self.inAir and not self.jumping:
             self.gravity = Vector(0, 3)
         else:
             self.gravity = Vector(0, 0)
@@ -178,6 +178,7 @@ class Player(Sprite):
         if self.lives > 0:
             self.shooting = True
             self.bullets.append(self.shoot())
+            self.currentFrame[0] = 2
 
     def startRoll(self):
         if self.lives > 0:

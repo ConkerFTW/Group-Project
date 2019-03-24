@@ -3,6 +3,7 @@ import random
 from Bullet import Bullet
 import os
 
+
 from Vector import Vector
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 class Enemy(Sprite):
@@ -22,19 +23,19 @@ class Enemy(Sprite):
 
         if enemyType == "walker":
             if num == 1:
-                self.pos = Vector(0,530)
+                self.pos = Vector(0,650)
             elif num == 0:
-                self.pos = Vector(1000,530)
+                self.pos = Vector(1280,650)
             self.health = 5
             self.vel = Vector(0,0)
             self.sizeDest = (self.sizeDest[0] /5,self.sizeDest[1]/5)
 
         elif enemyType == "shooter":
             if num == 1:
-                self.pos = Vector(random.randrange(50,300),random.randrange(100,300))
+                self.pos = Vector(random.randrange(50,440),random.randrange(100,360))
                 self.right = True
             elif num == 0:
-                self.pos = Vector(random.randrange(700,950),random.randrange(100,300))
+                self.pos = Vector(random.randrange(840,1230),random.randrange(100,360))
                 self.right = False
             self.health = 1
             self.vel = Vector(0,0)
@@ -146,8 +147,8 @@ class Enemy(Sprite):
         return Bullet(self.pos,vel,True,"magic",right,imagenormal,imagealternate, 8,8) #Starting Pos, Starting Velocity(Direction Towards Player), if Hostile
 
     def horizontalShoot(self):
-        yStart = random.randrange(20,500)
-        xStart = random.choice([0,1000])
+        yStart = random.randrange(20,630)
+        xStart = random.choice([0,1280])
         startPos = Vector(xStart,yStart)
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         imagenormal = os.path.join(__location__, 'images/sprites/flyingRight.png')

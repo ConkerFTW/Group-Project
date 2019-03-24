@@ -43,7 +43,7 @@ class Interaction():
             self.player.startJump()
         elif not self.keyboard.up or self.player.pos.getP()[1] == 0:
             self.player.stopJump()
-        elif self.player.pos.getP()[1] == 500:
+        elif self.player.pos.getP()[1] == 620:
             self.player.inAir = False
 
         if self.keyboard.space and not self.player.shooting:
@@ -73,7 +73,7 @@ class Interaction():
                             self.player.removeLife()
                             self.takingDamage = True
                             self.counter = 1
-                    if bullet.pos.getP()[0] > 1200 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or bullet.pos.getP()[1] < -50:
+                    if bullet.pos.getP()[0] > 1400 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or bullet.pos.getP()[1] < -50:
                         enemy.bullets.remove(bullet)
 
             if enemy.checkCollisionWith(self.player):
@@ -100,7 +100,7 @@ class Interaction():
 
 
         for bullet in self.player.bullets:
-            if bullet.pos.getP()[0] > 1200 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or \
+            if bullet.pos.getP()[0] > 1400 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or \
                     bullet.pos.getP()[1] < -50:
                 self.player.bullets.remove(bullet)
 

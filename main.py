@@ -8,6 +8,9 @@ from Interaction import Interaction
 from Enemy import Enemy
 from Gui import Gui
 import os
+
+WIDTH = 1280
+HEIGHT = 720
 class Game():
     def __init__(self):
         self.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -19,17 +22,20 @@ class Game():
         self.fwizleft = os.path.join(self.__location__, 'images/sprites/wizzardLeft.png')
         self.lives = os.path.join(self.__location__, 'images/lives.png')
         self.error = os.path.join(self.__location__, 'images/sprites/error.png')
+        self.load = os.path.join(self.__location__, 'images/loading.png')
+        self.loading = simplegui._load_local_image(self.load)
+        self.back = os.path.join(self.__location__, 'images/1280x720GameBackground.png')
+        self.background = simplegui._load_local_image(self.back)
         self.level = 1
-        self.WIDTH = 1000
-        self.HEIGHT = 600
         self.player = Player(self.fcat, self.fcatleft, 16, 16)
         self.keyboard = KeyBoard()
         self.enemies = self.spawnEnemies(0, 0)
         self.gui = Gui(self.lives, self.lives, 1, 1, self.player)
+        self.counter = 0
 
 
         self.interaction = Interaction(self.player, self.keyboard, self.enemies,self.gui)
-        self.frame = simplegui.create_frame("Catmando", self.WIDTH, self.HEIGHT)
+        self.frame = simplegui.create_frame("Catmando", WIDTH, HEIGHT)
         self.frame.set_draw_handler(self.draw)
         self.frame.set_keydown_handler(self.keyboard.keyDown)
         self.frame.set_keyup_handler(self.keyboard.keyUp)
@@ -53,28 +59,34 @@ class Game():
 
         return enemies
 
-    def draw(self,cavnas):
-        self.interaction.draw(cavnas)
+    def draw(self, canvas):
+        self.interaction.draw(canvas)
         if len(self.interaction.enemies) == 1:
-            self.player.lives += 1
-            self.level += 1
-            self.player.bullets.clear()
-            if self.level == 2:
-                self.enemies = self.spawnEnemies(5, 0)
-            elif self.level == 3:
-                self.enemies = self.spawnEnemies(4, 3)
-            elif self.level == 4:
-                self.enemies = self.spawnEnemies(6, 6)
-            elif self.level == 5:
-                self.enemies.clear()
-                print("Boss Time")
-            self.interaction.enemies = self.enemies
+            self.counter += 1
+            canvas.draw_image(self.loading,(256,256),(512,512),(WIDTH/2,HEIGHT/2),(512,512))
+            if self.counter % 120 == 0:
+                self.player.lives += 1
+                self.level += 1
+                self.player.bullets.clear()
+                if self.level == 2:
+                    self.enemies = self.spawnEnemies(5, 0)
+                elif self.level == 3:
+                    self.enemies = self.spawnEnemies(4, 3)
+                elif self.level == 4:
+                    self.enemies = self.spawnEnemies(6, 6)
+                elif self.level == 5:
+                    self.enemies.clear()
+                    print("Boss Time")
+                self.interaction.enemies = self.enemies
+                self.counter = 0
         if self.player.dead:
             self.frame.stop()
 
 
     def startLevel(self):
+        self.frame._set_canvas_background_image(self.background)
         self.frame.start()
+
 
 
 game = Game()
