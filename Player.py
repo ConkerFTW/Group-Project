@@ -4,11 +4,14 @@ from Sprite import Sprite
 from Vector import Vector
 from Bullet import Bullet
 import os
+import pygame
+
 
 
 class Player(Sprite):
     def __init__(self, image,image_alternate, columns, rows):
         super().__init__(image,image_alternate, columns, rows)
+        pygame.mixer.pre_init(44100, -16, 1, 512) # Prevents Pygame sound delay: https://www.reddit.com/r/pygame/comments/8gsoue/delayed_audio_in_pygame/
         self.lives = 2
         self.nonInterrupt = False
         self.moving = False
@@ -23,6 +26,16 @@ class Player(Sprite):
         self.gravity = Vector(0, 0)
         self.frameCounter = 0
         self.deadCounter = 0
+
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        soundeffect = os.path.join(__location__, 'Sounds/classic_hurt.ogg')
+        self.oof = simplegui._load_local_sound(soundeffect)
+
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        soundeffect = os.path.join(__location__, 'Sounds/gunSound.ogg')
+        self.pew = simplegui._load_local_sound(soundeffect)
+        self.pew.set_volume(.25)
+
 
     def update(self):
         if self.frameCounter % 10 == 0:
@@ -132,8 +145,8 @@ class Player(Sprite):
 
     # Method to spawn bullet
     def shoot(self):
+        self.pew.play()
         xStart, yStart = self.pos.getP()
-        startPos = Vector(xStart, yStart + 30)
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         imagenormal = os.path.join(__location__, 'images/sprites/boomerangbullet.png')
         imagealternate = os.path.join(__location__, 'images/sprites/boomerangbulletleft.png')
@@ -141,9 +154,15 @@ class Player(Sprite):
         if self.right:
             vel = Vector(6, 0)
             right = True
+            xStart += 60
         else:
             vel = Vector(-6, 0)
             right = False
+            xStart -= 60
+
+        startPos = Vector(xStart, yStart + 30)
+
+
 
         return Bullet(startPos, vel, False, "bullet", right, imagenormal, imagealternate, 8, 1)
 
@@ -183,6 +202,8 @@ class Player(Sprite):
     def removeLife(self):
         if not self.invincible and self.lives > 0:
             self.lives -= 1
+            self.oof.set_volume(1)
+            self.oof.play()
             if self.lives == 0:
                 self.currentFrame[0] = 0
 

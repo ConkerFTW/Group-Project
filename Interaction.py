@@ -44,10 +44,10 @@ class Interaction():
         else:
             self.player.stopJump()
 
-        if self.keyboard.space and self.timeShooting >= 15:
+        if self.keyboard.space and not self.player.shooting:
             self.player.startShooting()
             self.timeShooting = 0
-        else:
+        if self.timeShooting >= 15:
             self.player.stopShooting()
 
         for enemy in self.enemies:
