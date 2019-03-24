@@ -97,11 +97,14 @@ class Game():
                     self.enemies = self.spawnEnemies(8,4)
 
                 elif self.level == 5:
-                    self.enemies = self.spawnEnemies(6,10,1)
+                    self.enemies = self.spawnEnemies(8,5)
                     self.music1.pause()
                     self.music3.play()
 
                 elif self.level == 6:
+                    self.enemies = self.spawnEnemies(10,7)
+
+                elif self.level == 7:
                     self.enemies.clear()
                     self.enemies = self.spawnEnemies(0,0,50)
                     self.music2.play()
