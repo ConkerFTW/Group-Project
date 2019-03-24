@@ -39,10 +39,12 @@ class Interaction():
         else:
             self.player.stopMoving()
 
-        if self.keyboard.up:
+        if self.keyboard.up and not self.player.inAir:
             self.player.startJump()
-        else:
+        elif not self.keyboard.up or self.player.pos.getP()[1] == 0:
             self.player.stopJump()
+        elif self.player.pos.getP()[1] == 500:
+            self.player.inAir = False
 
         if self.keyboard.space and not self.player.shooting:
             self.player.startShooting()

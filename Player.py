@@ -26,6 +26,7 @@ class Player(Sprite):
         self.gravity = Vector(0, 0)
         self.frameCounter = 0
         self.deadCounter = 0
+        self.inAir = False
 
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         soundeffect = os.path.join(__location__, 'Sounds/classic_hurt.ogg')
@@ -135,6 +136,8 @@ class Player(Sprite):
 
         self.velocity = Vector(self.velocity.getP()[0] * 0.94, self.velocity.getP()[1])
         self.velocity += self.gravity
+        if self.jumping:
+            self.velocity = Vector(self.velocity.getP()[0], -10)
 
     # Updating the acceleration
     def updateAcceleration(self):
@@ -183,7 +186,7 @@ class Player(Sprite):
     def startJump(self):
         if self.lives > 0:
             self.jumping = True
-            self.velocity = Vector(self.velocity.getP()[0], -10)
+            self.inAir = True
 
     def stopJump(self):
         if self.lives > 0:
