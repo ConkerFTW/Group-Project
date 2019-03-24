@@ -26,12 +26,13 @@ class Game():
         self.loading = simplegui._load_local_image(self.load)
         self.back = os.path.join(self.__location__, 'images/1280x720GameBackground.png')
         self.background = simplegui._load_local_image(self.back)
-        self.level = 0
+        self.level = 2
         self.player = Player(self.fcat, self.fcatleft, 16, 16)
         self.keyboard = KeyBoard()
         self.enemies = []
         self.gui = Gui(self.lives, self.lives, 1, 1, self.player)
         self.counter = 0
+        self.gameOver = False
 
 
         self.interaction = Interaction(self.player, self.keyboard, self.enemies,self.gui)
@@ -40,13 +41,14 @@ class Game():
         self.frame.set_keydown_handler(self.keyboard.keyDown)
         self.frame.set_keyup_handler(self.keyboard.keyUp)
 
-    def spawnEnemies(self,walkers, shooters):
+    def spawnEnemies(self,walkers, shooters, missile = 1):
         enemies = []
         for i in range(0, walkers):
             enemies.append(Enemy(self.fman,self.fmanleft,4,1,"walker"))
         for i in range(0,shooters):
             enemies.append(Enemy(self.fwiz,self.fwizleft,7,6,"shooter"))
-        enemies.append(Enemy(self.error,self.error,1,1,"missileLauncher"))
+        for i in range(0,missile):
+            enemies.append(Enemy(self.error,self.error,1,1,"missileLauncher"))
 
 
         enemiescopy = enemies
@@ -73,14 +75,20 @@ class Game():
                 elif self.level == 2:
                     self.enemies = self.spawnEnemies(4, 3)
                 elif self.level == 3:
-                    self.enemies = self.spawnEnemies(6, 6)
+                    self.enemies = self.spawnEnemies(1, 1)
                 elif self.level == 4:
                     self.enemies.clear()
-                    print("Boss Time")
+                    self.enemies = self.spawnEnemies(0,0,50)
+                    self.gameOver = True
                 self.interaction.enemies = self.enemies
                 self.counter = 0
         if self.player.dead:
             self.frame.stop()
+        if self.gameOver == True:
+            self.counter += 1
+            canvas.draw_text("Game Over",(320,HEIGHT/2),124,"Black")
+            if self.counter == 200:
+                self.frame.stop()
 
 
     def startLevel(self):
