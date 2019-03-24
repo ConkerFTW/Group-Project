@@ -8,6 +8,7 @@ from Interaction import Interaction
 from Enemy import Enemy
 from Gui import Gui
 import os
+from FinalBoss import start
 
 WIDTH = 1280
 HEIGHT = 720
@@ -26,13 +27,25 @@ class Game():
         self.loading = simplegui._load_local_image(self.load)
         self.back = os.path.join(self.__location__, 'images/1280x720GameBackground.png')
         self.background = simplegui._load_local_image(self.back)
-        self.level = 2
+        self.level = 0
         self.player = Player(self.fcat, self.fcatleft, 16, 16)
         self.keyboard = KeyBoard()
         self.enemies = []
         self.gui = Gui(self.lives, self.lives, 1, 1, self.player)
         self.counter = 0
         self.gameOver = False
+
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        soundeffect = os.path.join(__location__, 'Sounds/bensound-jazzyfrenchy.ogg')
+        self.music1 = simplegui._load_local_sound(soundeffect)
+
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        soundeffect = os.path.join(__location__, 'Sounds/bensound-theelevatorbossanova.ogg')
+        self.music2 = simplegui._load_local_sound(soundeffect)
+
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        soundeffect = os.path.join(__location__, 'Sounds/Captive_Portal_-_03_-_An_Example_For.ogg')
+        self.music3 = simplegui._load_local_sound(soundeffect)
 
 
         self.interaction = Interaction(self.player, self.keyboard, self.enemies,self.gui)
@@ -71,15 +84,30 @@ class Game():
                 self.level += 1
                 self.player.bullets.clear()
                 if self.level == 1:
-                    self.enemies = self.spawnEnemies(5, 0)
+                    self.enemies = self.spawnEnemies(2, 0)
+                    self.music1.play()
+
                 elif self.level == 2:
-                    self.enemies = self.spawnEnemies(4, 3)
+                    self.enemies = self.spawnEnemies(10, 1)
+
                 elif self.level == 3:
-                    self.enemies = self.spawnEnemies(1, 1)
+                    self.enemies = self.spawnEnemies(5, 3)
+
                 elif self.level == 4:
+                    self.enemies = self.spawnEnemies(8,4)
+
+                elif self.level == 5:
+                    self.enemies = self.spawnEnemies(6,10,1)
+                    self.music1.pause()
+                    self.music3.play()
+
+                elif self.level == 6:
                     self.enemies.clear()
                     self.enemies = self.spawnEnemies(0,0,50)
+                    self.music2.play()
+                    self.music3.pause()
                     self.gameOver = True
+
                 self.interaction.enemies = self.enemies
                 self.counter = 0
         if self.player.dead:
@@ -88,7 +116,10 @@ class Game():
             self.counter += 1
             canvas.draw_text("Game Over",(320,HEIGHT/2),124,"Black")
             if self.counter == 200:
+                #start()
                 self.frame.stop()
+
+
 
 
     def startLevel(self):
