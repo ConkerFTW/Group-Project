@@ -47,8 +47,13 @@ class Bullet(Sprite):
         if self.type == "missile":
             if self.distanceTo(other.pos) <= self.sizeDest[0]/2:
                 return True
-        else:
+        elif self.type == "magic":
             if self.distanceTo(other.pos) <= self.sizeDest[0]:
+                return True
+
+
+        else:
+            if self.distanceTo(other.pos) <= other.sizeDest[0]/3 or self.distanceTo(other.pos) <= other.sizeDest[1]/2:
                 return True
 
 
