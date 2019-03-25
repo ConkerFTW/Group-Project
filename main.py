@@ -76,7 +76,18 @@ class Game():
 
     def draw(self, canvas):
         self.interaction.draw(canvas)
-        if len(self.interaction.enemies) <= 1:
+        if self.level == 0 and self.counter < 300:
+            intro_text1 = "Our story begins with a special operations unit known as..."
+            intro_text2 = "THE CATMANDO!"
+            intro_text3 = "Today he has been sent on a high stakes diplomacy mission!"
+            intro_text4 = "Well sort of..."
+            canvas.draw_text(intro_text1, (200, 50), 44, "Black")
+            canvas.draw_text(intro_text2, (200, 100), 44, "Black")
+            canvas.draw_text(intro_text3, (200, 150), 44, "Black")
+            canvas.draw_text(intro_text4, (200, 200), 44, "Black")
+            self.counter += 1
+
+        elif len(self.interaction.enemies) <= 1:
             self.counter += 1
             canvas.draw_image(self.loading,(256,256),(512,512),(WIDTH/2,HEIGHT/2),(512,512))
             if self.counter % 120 == 0:
