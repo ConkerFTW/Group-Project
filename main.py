@@ -9,11 +9,16 @@ from Enemy import Enemy
 from Gui import Gui
 import os
 from FinalBoss import start
+from Button import menu
+import pygame
 
 WIDTH = 1280
 HEIGHT = 720
 class Game():
     def __init__(self):
+
+        #Boiler Plate Loading and setting of Variables
+
         self.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         self.fcat = os.path.join(self.__location__, 'images/sprites/catmandoRight.png')
         self.fcatleft = os.path.join(self.__location__, 'images/sprites/catmandoLeft.png')
@@ -35,15 +40,14 @@ class Game():
         self.counter = 0
         self.gameOver = False
 
+        # Load from correct directories to work on all systems.
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         soundeffect = os.path.join(__location__, 'Sounds/bensound-jazzyfrenchy.ogg')
         self.music1 = simplegui._load_local_sound(soundeffect)
 
-        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         soundeffect = os.path.join(__location__, 'Sounds/bensound-theelevatorbossanova.ogg')
         self.music2 = simplegui._load_local_sound(soundeffect)
 
-        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         soundeffect = os.path.join(__location__, 'Sounds/Captive_Portal_-_03_-_An_Example_For.ogg')
         self.music3 = simplegui._load_local_sound(soundeffect)
 
@@ -55,6 +59,7 @@ class Game():
         self.frame.set_keyup_handler(self.keyboard.keyUp)
 
     def spawnEnemies(self,walkers, shooters, missile = 1):
+        # Spawns a number of enemies depending on parameters
         enemies = []
         for i in range(0, walkers):
             enemies.append(Enemy(self.fman,self.fmanleft,4,1,"walker"))
@@ -65,6 +70,7 @@ class Game():
 
 
         enemiescopy = enemies
+        # Remove any enemies that overlap
         for enemy in enemiescopy:
             for other in enemiescopy:
                 if enemy.checkCollisionWith(other) and enemy.enemyType == "shooter" and other != enemy:
@@ -79,15 +85,26 @@ class Game():
         if self.level == 0 and self.counter < 300:
             intro_text1 = "Our story begins with a special operations unit known as..."
             intro_text2 = "THE CATMANDO!"
-            intro_text3 = "Today he has been sent on a high stakes diplomacy mission!"
+            intro_text3 = "Today he has been sent on a high stakes diplomacy mission in Kathmandu!"
             intro_text4 = "Well sort of..."
             canvas.draw_text(intro_text1, (200, 50), 44, "Black")
             canvas.draw_text(intro_text2, (200, 100), 44, "Black")
             canvas.draw_text(intro_text3, (200, 150), 44, "Black")
             canvas.draw_text(intro_text4, (200, 200), 44, "Black")
             self.counter += 1
+        elif self.level == 0 and self.counter < 600:
+            control_text1 = "Left and Right to Move!"
+            control_text2 = "Hold Up to Jump!"
+            control_text3 = "Space to Fire your Gun!"
+            control_text4 = "Good Luck! Catmando!"
+            canvas.draw_text(control_text1, (200, 50), 44, "Black")
+            canvas.draw_text(control_text2, (200, 100), 44, "Black")
+            canvas.draw_text(control_text3, (200, 150), 44, "Black")
+            canvas.draw_text(control_text4, (200, 200), 44, "Black")
+            self.counter += 1
 
         elif len(self.interaction.enemies) <= 1:
+            # Load next Level
             self.counter += 1
             canvas.draw_image(self.loading,(256,256),(512,512),(WIDTH/2,HEIGHT/2),(512,512))
             if self.counter % 120 == 0:
@@ -104,6 +121,7 @@ class Game():
                 elif self.level == 3:
                     self.enemies = self.spawnEnemies(5, 3)
 
+
                 elif self.level == 4:
                     self.enemies = self.spawnEnemies(8,4)
 
@@ -117,7 +135,7 @@ class Game():
 
                 elif self.level == 7:
                     self.enemies.clear()
-                    self.enemies = self.spawnEnemies(0,0,50)
+                    self.enemies = self.spawnEnemies(0,0,30)
                     self.music2.play()
                     self.music3.pause()
                     self.gameOver = True
@@ -128,10 +146,11 @@ class Game():
             self.frame.stop()
         if self.gameOver == True:
             self.counter += 1
-            canvas.draw_text("Game Over",(320,HEIGHT/2),124,"Black")
-            if self.counter == 200:
-                #start()
-                self.frame.stop()
+            canvas.draw_text("You Win!",(420,HEIGHT/2),124,"Black")
+            canvas.draw_text(" Or do you...", (320,(HEIGHT/2)+124),124,"Black")
+            # if self.counter == 200:
+            #     #start()
+            #     self.frame.stop()
 
 
 
@@ -141,7 +160,8 @@ class Game():
         self.frame.start()
 
 
+if menu():
+    game = Game()
+    game.startLevel()
 
-game = Game()
-game.startLevel()
 

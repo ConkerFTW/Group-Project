@@ -13,21 +13,21 @@ class Player(Sprite):
         super().__init__(image,image_alternate, columns, rows)
         pygame.mixer.pre_init(44100, -16, 1, 512) # Prevents Pygame sound delay: https://www.reddit.com/r/pygame/comments/8gsoue/delayed_audio_in_pygame/
         self.lives = 2
-        self.nonInterrupt = False
         self.moving = False
         self.dead = False
         self.shooting = False
         self.jumping = False
-        self.rolling = False
+        #self.rolling = False
         self.invincible = False
         self.bullets = []
         self.velocity = Vector(0, 0)
-        self.pos = Vector(SCREENWIDTH/2,700)
+        self.pos = Vector(SCREENWIDTH/2, SCREENHEIGHT - 20)
         self.gravity = Vector(0, 0)
         self.frameCounter = 0
         self.deadCounter = 0
         self.inAir = False
 
+        # Sound effects for the player
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         soundeffect = os.path.join(__location__, 'Sounds/classic_hurt.ogg')
         self.oof = simplegui._load_local_sound(soundeffect)
@@ -44,17 +44,19 @@ class Player(Sprite):
         self.updateVel()
         self.updateAcceleration()
         self.pos += self.velocity
-        if self.pos.getP()[1] > 620:
+        # Checks to stop player going off the screen
+        if self.pos.getP()[1] > SCREENHEIGHT - 100:
             self.pos = Vector(self.pos.getP()[0], 620)
         elif self.pos.getP()[1] < 0:
             self.pos = Vector(self.pos.getP()[0], 1)
             self.jumping = False
-        if self.pos.getP()[0] > 1255:
+        if self.pos.getP()[0] > SCREENWIDTH - 25:
             self.pos = Vector(1255, self.pos.getP()[1])
         elif self.pos.getP()[0] < 25:
             self.pos = Vector(25, self.pos.getP()[1])
         self.frameCounter += 1
 
+    # Custom draw method for the player sprite as the sprite sheet is more complex and had some issues
     def draw(self, canvas):
         if self.right:
             centreDest = (self.pos.getP()[0], self.pos.getP()[1])
@@ -76,7 +78,8 @@ class Player(Sprite):
             self.currentFrame[1] = 8
             if self.currentFrame[0] > 5:
                 self.dead = True
-        # Rolling
+
+        # Rolling Animation (Not used in final game)
         #elif self.rolling:
         #    self.currentFrame[1] = 7
         #  # Run rolling animation
@@ -89,17 +92,6 @@ class Player(Sprite):
             self.currentFrame[1] = 5
             if self.currentFrame[0] >= 6:
                 self.currentFrame[0] = 4
-
-        # Jumping while shooting
-        elif self.jumping and self.shooting:
-            if self.currentFrame[1] == 4 or self.currentFrame[1] == 5:
-                self.currentFrame[0] = 6
-            elif self.currentFrame[0] < 10:
-                self.currentFrame[0] = 5
-            else:
-                self.currentFrame[0] = 0
-                self.jumping = False
-                self.nonInterrupt = False
 
         # Shooting while still
         elif self.shooting and not self.moving:
@@ -146,7 +138,7 @@ class Player(Sprite):
         else:
             self.gravity = Vector(0, 0)
 
-    # Method to spawn bullet
+    # Spawns a non hostile bullet
     def shoot(self):
         self.pew.play()
         xStart, yStart = self.pos.getP()
@@ -154,6 +146,7 @@ class Player(Sprite):
         imagenormal = os.path.join(__location__, 'images/sprites/boomerangbullet.png')
         imagealternate = os.path.join(__location__, 'images/sprites/boomerangbulletleft.png')
 
+        # Sets velocity of bullet repective to direction the player is facing
         if self.right:
             vel = Vector(6, 0)
             right = True
@@ -162,14 +155,10 @@ class Player(Sprite):
             vel = Vector(-6, 0)
             right = False
             xStart -= 60
-
         startPos = Vector(xStart, yStart + 30)
-
-
-
         return Bullet(startPos, vel, False, "bullet", right, imagenormal, imagealternate, 8, 1)
 
-    # Following methods to be called in interaction class after user inputs
+    # Following methods to be called in interaction class after user inputs to switch boolean variables
     def startMoving(self):
         if self.lives > 0:
             self.moving = True
@@ -180,20 +169,21 @@ class Player(Sprite):
             self.bullets.append(self.shoot())
             self.currentFrame[0] = 2
 
-    def startRoll(self):
-        if self.lives > 0:
-            self.rolling = True
+    #def startRoll(self):
+    #    if self.lives > 0:
+    #        self.rolling = True
 
     def startJump(self):
         if self.lives > 0:
             self.jumping = True
             self.inAir = True
 
+
+    # Called from interaction class when user input ends
     def stopJump(self):
         if self.lives > 0:
             self.jumping = False
 
-    # Called from interaction class when user input ends
     def stopMoving(self):
         if self.lives > 0:
             self.moving = False
@@ -201,6 +191,7 @@ class Player(Sprite):
     def stopShooting(self):
         if self.lives > 0:
             self.shooting = False
+
 
     # Called from interaction class following collision
     def removeLife(self):
@@ -210,5 +201,3 @@ class Player(Sprite):
             self.oof.play()
             if self.lives == 0:
                 self.currentFrame[0] = 0
-
-

@@ -54,5 +54,5 @@ def battle(player, enemy):
 
 
 def start():
-    battle(Player(), Enemy("Donald Trump", 10, 5, 100))
+    battle(Player(), Enemy("Big Bad", 10, 5, 100))
     # random.choice means it will randomly choose the enemies.

@@ -45,7 +45,7 @@ class Bullet(Sprite):
 
     def checkCollisionWith(self, other):
         if self.type == "missile":
-            if self.distanceTo(other.pos) <= self.sizeDest[0]/2:
+            if self.distanceTo(other.pos) <= self.sizeDest[0]/2: #Changes the Value to account for larger hitboxes
                 return True
         elif self.type == "magic":
             if self.distanceTo(other.pos) <= self.sizeDest[0]:

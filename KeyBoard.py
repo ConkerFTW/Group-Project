@@ -1,13 +1,13 @@
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
-
-
+# Class for keyboard inputs to be handled
 class KeyBoard:
     def __init__(self):
         self.left = False
         self.right = False
         self.up = False
-        self.down = False
+        # Down key input not used in final game
+        # self.down = False
         self.space = False
         '''
         (Potential 2-Player controls)
@@ -25,8 +25,8 @@ class KeyBoard:
             self.right = True
         if key == simplegui.KEY_MAP['up']:
             self.up = True
-        if key == simplegui.KEY_MAP['down']:
-            self.down = True
+        #if key == simplegui.KEY_MAP['down']:
+        #    self.down = True
         if key == simplegui.KEY_MAP['space']:
             self.space = True
 
@@ -51,8 +51,8 @@ class KeyBoard:
             self.right = False
         if key == simplegui.KEY_MAP['up']:
             self.up = False
-        if key == simplegui.KEY_MAP['down']:
-            self.down = False
+        #if key == simplegui.KEY_MAP['down']:
+        #    self.down = False
         if key == simplegui.KEY_MAP['space']:
             self.space = False
 

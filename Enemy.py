@@ -20,7 +20,7 @@ class Enemy(Sprite):
 
         num = random.randrange(0, 2)
 
-
+        # Spawn each enemy in different areas depending on their type
         if enemyType == "walker":
             if num == 1:
                 self.pos = Vector(0,650)
@@ -42,6 +42,7 @@ class Enemy(Sprite):
             self.sizeDest = (self.sizeDest[0] / 2, self.sizeDest[1] / 2)
             self.idle = True
 
+        # This enemy that fires the missiles is off screen and cannot be seen
         elif self.enemyType == "missileLauncher":
             self.pos = Vector(-2000,-2000)
             self.right = True
@@ -54,6 +55,7 @@ class Enemy(Sprite):
 
     def update(self):
         self.updateState()
+        #Update all the spritesheets depending on their type
         if self.frameCounter % 20 == 0:
             self.currentFrame[0] += 1
         if self.enemyType == "walker": # TODO Update with more Enemies
@@ -90,6 +92,7 @@ class Enemy(Sprite):
             number1 = random.randrange(0, 200)
             number2 = random.randrange(0 ,200)
 
+            # Randomly fires a Missile if the random numbers are equal
             if number1 == number2:
                 self.bullets.append(self.horizontalShoot())
 
@@ -115,6 +118,7 @@ class Enemy(Sprite):
             num1 = random.randrange(0,100)
             num2 = random.randrange(0,100)
 
+            #Randomly shoot a bullet
             if num1 == num2:
                 self.shooting = True
                 self.idle = False
@@ -131,6 +135,7 @@ class Enemy(Sprite):
 
 
     def shoot(self,playerpos):
+        #Targets the player
         x = -(self.pos.getP()[0] - playerpos.getP()[0]) / 100
         y = -(self.pos.getP()[1] - playerpos.getP()[1]) / 100
         vel = Vector(x,y)
@@ -147,7 +152,8 @@ class Enemy(Sprite):
         return Bullet(self.pos,vel,True,"magic",right,imagenormal,imagealternate, 8,8) #Starting Pos, Starting Velocity(Direction Towards Player), if Hostile
 
     def horizontalShoot(self):
-        yStart = random.randrange(20,630)
+        #Fires across screen ar set speed, cannot be killed hence is a Bullet not Enemy
+        yStart = random.randrange(20,670)
         xStart = random.choice([0,1280])
         startPos = Vector(xStart,yStart)
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))

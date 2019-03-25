@@ -25,6 +25,7 @@ class Sprite():
         centreDest = (self.pos.getP()[0], self.pos.getP()[1])
         centerSource = [self.frameSize[i] * self.currentFrame[i] + self.frameCentre[i] for i in [0, 1]]
 
+        #Changes the image to draw depedning on which way the spite is facing
         if self.right:
             canvas.draw_image(self.image, centerSource, self.frameSize, centreDest, self.sizeDest)
         else:

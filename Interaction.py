@@ -69,14 +69,17 @@ class Interaction():
                 for bullet in enemy.bullets:
                     if bullet.checkCollisionWith(self.player):
                         enemy.bullets.remove(bullet)
+                        #Check bullet collisions
                         if not self.takingDamage:
                             self.player.removeLife()
                             self.takingDamage = True
                             self.counter = 1
+                    #Remove off screen bullets
                     if bullet.pos.getP()[0] > 1400 or bullet.pos.getP()[1] > 800 or bullet.pos.getP()[0] < -50 or bullet.pos.getP()[1] < -50:
                         enemy.bullets.remove(bullet)
 
             if enemy.checkCollisionWith(self.player):
+                #Check if an enemy is colliding with the player.
                 if not self.takingDamage:
                     self.player.removeLife()
                     self.takingDamage = True
