@@ -21,10 +21,10 @@ class Bullet(Sprite):
         self.pos = Vector(self.pos.getP()[0]+self.dx.getP()[0], self.pos.getP()[1]+self.dx.getP()[1])
 
         if self.type == "missile":
-            if self.currentFrame[0] > 4:
-                self.currentFrame[0] = 0
-            elif self.frameCounter % 20 == 0:
+            if self.frameCounter % 20 == 0:
                 self.currentFrame[0] += 1
+                if self.currentFrame[0] > 4:
+                    self.currentFrame[0] = 0
 
 
         if self.type == "magic":
