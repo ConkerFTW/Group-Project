@@ -5,7 +5,7 @@ pygame.init ()
 WHITE = (255, 255, 255)
 GREY = (111, 114, 119)
 BLACK = (0, 0, 0)
-pygame.display.set_caption ('CatManDo')
+pygame.display.set_caption ('Catmando')
 
 
 startGame = False

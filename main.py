@@ -1,16 +1,12 @@
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-from Sprite import Sprite
 from KeyBoard import KeyBoard
-from Bullet import Bullet
 from Player import Player
 from Vector import Vector
 from Interaction import Interaction
 from Enemy import Enemy
 from Gui import Gui
 import os
-from FinalBoss import start
 from Button import menu
-import pygame
 
 WIDTH = 1280
 HEIGHT = 720
@@ -18,7 +14,6 @@ class Game():
     def __init__(self):
 
         #Boiler Plate Loading and setting of Variables
-
         self.__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         self.fcat = os.path.join(self.__location__, 'images/sprites/catmandoRight.png')
         self.fcatleft = os.path.join(self.__location__, 'images/sprites/catmandoLeft.png')
@@ -85,8 +80,8 @@ class Game():
         if self.level == 0 and self.counter < 300:
             intro_text1 = "Our story begins with a special operations unit known as..."
             intro_text2 = "THE CATMANDO!"
-            intro_text3 = "Today he has been sent on a high stakes diplomacy mission in Kathmandu!"
-            intro_text4 = "Well sort of..."
+            intro_text3 = "Today he has been sent on a high stakes diplomacy mission "
+            intro_text4 = "in Kathmandu! Well sort of..."
             canvas.draw_text(intro_text1, (200, 50), 44, "Black")
             canvas.draw_text(intro_text2, (200, 100), 44, "Black")
             canvas.draw_text(intro_text3, (200, 150), 44, "Black")
